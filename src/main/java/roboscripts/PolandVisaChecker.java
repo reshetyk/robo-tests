@@ -8,12 +8,13 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Date;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author alre
  */
-public class PolandVisaChecker implements Runnable {
+public class PolandVisaChecker implements Callable<Boolean> {
     private WebDriver driver;
     private String visaCenterName;
     private String visaType;
@@ -31,7 +32,7 @@ public class PolandVisaChecker implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Boolean call() throws Exception {
         try {
             goToFormChooseVisaCenter();
 
@@ -57,7 +58,7 @@ public class PolandVisaChecker implements Runnable {
         } catch (Throwable e) {
             e.printStackTrace();
             driver.navigate().refresh();
-            run();
+            return false;
 //            sendEmail("Exception", e.getMessage());
         }
 
